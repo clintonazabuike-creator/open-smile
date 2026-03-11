@@ -3,160 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smile Toolbox | By ClintonAzubuike-Creator</title>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
+    <title>Smile Toolbox Pro | ClintonAzubuike-Creator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        :root { --primary: #4A90E2; --secondary: #50E3C2; --bg: #f0f2f5; --card: #ffffff; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--bg); display: flex; flex-direction: column; min-height: 100vh; }
-        
-        /* Signature Header */
-        header { background: white; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .sig-text { font-size: 12px; color: #888; font-weight: bold; margin-top: 5px; }
+        :root { 
+            --primary: #4A90E2; --bg: #f0f2f5; --card: #ffffff; --text: #333; --accent: #50E3C2;
+        }
+        [data-theme="dark"] {
+            --bg: #121212; --card: #1e1e1e; --text: #ffffff; --primary: #75b0f0;
+        }
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; margin: 0; 
+            background: var(--bg); color: var(--text); transition: 0.3s;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
 
-        #main-container { flex: 1; padding: 20px; max-width: 500px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+        /* High-Level Header */
+        header { 
+            background: var(--card); padding: 25px; text-align: center; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100;
+        }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: -1px; }
+        .theme-toggle { 
+            position: absolute; right: 20px; top: 25px; cursor: pointer; font-size: 20px;
+        }
 
-        /* Dashboard Grid */
+        /* Dashboard */
+        #main-container { flex: 1; padding: 20px; max-width: 600px; margin: 0 auto; width: 100%; box-sizing: border-box; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .card { background: var(--card); border-radius: 20px; padding: 25px 10px; text-align: center; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.2s; border: 1px solid #eee; }
-        .card:active { transform: scale(0.95); background: #fafafa; }
-        .card i { font-size: 40px; display: block; margin-bottom: 10px; }
-        .card-name { font-weight: 600; font-size: 16px; color: #333; }
+        .card { 
+            background: var(--card); border-radius: 24px; padding: 30px 15px; 
+            text-align: center; cursor: pointer; transition: 0.3s;
+            border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .card i { font-size: 35px; margin-bottom: 12px; display: block; }
 
-        /* Tool Views */
-        .tool-view { display: none; background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Tools Views */
+        .tool-view { display: none; background: var(--card); padding: 30px; border-radius: 30px; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        .back-btn { background: #333; color: white; border: none; padding: 12px; border-radius: 12px; margin-bottom: 20px; cursor: pointer; width: 100%; font-weight: bold; }
+        input, select, textarea { 
+            width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; 
+            border: 1px solid #ddd; background: var(--bg); color: var(--text); box-sizing: border-box;
+        }
 
-        /* Tool: Calculator */
-        #calc-display { width: 100%; height: 60px; font-size: 28px; text-align: right; margin-bottom: 15px; padding: 10px; box-sizing: border-box; border: 2px solid #eee; border-radius: 15px; background: #f9f9f9; }
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .calc-grid button { padding: 20px 10px; font-size: 20px; border-radius: 15px; border: 1px solid #ddd; background: white; cursor: pointer; }
-        .calc-grid button:active { background: #eee; }
-        .op-btn { background: #f0f7ff !important; color: var(--primary); font-weight: bold; }
+        /* QR Specific */
+        #qrcode { display: flex; justify-content: center; margin: 20px 0; padding: 10px; background: white; border-radius: 10px; width: fit-content; margin: 20px auto; }
 
-        /* Tool: Water */
-        .water-btn { width: 100px; height: 100px; border-radius: 50%; background: var(--primary); color: white; border: none; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(74,144,226,0.4); }
+        /* Footer */
+        footer { padding: 30px; text-align: center; font-size: 13px; opacity: 0.7; }
+        .back-btn { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 15px; width: 100%; font-weight: bold; margin-bottom: 20px; cursor: pointer; }
 
-        /* Tool: Breathe */
-        .breathe-circle { width: 160px; height: 160px; background: var(--secondary); border-radius: 50%; margin: 50px auto; animation: breatheAnim 8s infinite ease-in-out; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
-        @keyframes breatheAnim { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.4); opacity: 1; } }
-
-        /* Global Footer */
-        footer { background: white; padding: 20px; text-align: center; font-size: 14px; border-top: 1px solid #eee; }
-        .creator-tag { color: var(--primary); font-weight: bold; }
+        .btn-action { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; }
     </style>
 </head>
-<body>
+<body data-theme="light">
 
 <header>
-    <h1>😊 Smile Toolbox</h1>
-    <div class="sig-text">BY CLINTONAZABUIKE-CREATOR</div>
+    <div class="logo">😊 Smile Toolbox <span style="color:var(--primary)">PRO</span></div>
+    <div class="theme-toggle" onclick="toggleTheme()">🌓</div>
+    <div style="font-size: 10px; opacity: 0.6; margin-top: 5px;">BY CLINTONAZABUIKE-CREATOR</div>
 </header>
 
 <div id="main-container">
-    <button class="back-btn" id="backBtn" style="display:none;" onclick="goHome()">← Back to Tools</button>
+    <button class="back-btn" id="backBtn" style="display:none;" onclick="goHome()">🏠 Return to Dashboard</button>
 
     <div id="dashboard" class="grid">
-        <div class="card" onclick="showTool('calc')"><i>🔢</i><span class="card-name">Calculator</span></div>
-        <div class="card" onclick="showTool('water')"><i>💧</i><span class="card-name">Water Tracker</span></div>
-        <div class="card" onclick="showTool('breathe')"><i>🧘</i><span class="card-name">Breathe</span></div>
-        <div class="card" onclick="showTool('notes')"><i>📝</i><span class="card-name">Quick Notes</span></div>
+        <div class="card" onclick="showTool('qr')"><i>📲</i>QR Creator</div>
+        <div class="card" onclick="showTool('units')"><i>⚖️</i>Unit Pro</div>
+        <div class="card" onclick="showTool('calc')"><i>🔢</i>Calc Plus</div>
+        <div class="card" onclick="showTool('water')"><i>💧</i>Health</div>
+        <div class="card" onclick="showTool('notes')"><i>📝</i>Vault</div>
+        <div class="card" onclick="showTool('about')"><i>👑</i>Creator</div>
     </div>
 
-    <div id="tool-calc" class="tool-view">
-        <h2 style="margin-top:0">Calculator</h2>
-        <input type="text" id="calc-display" readonly placeholder="0">
-        <div class="calc-grid">
-            <button onclick="press('7')">7</button><button onclick="press('8')">8</button><button onclick="press('9')">9</button><button class="op-btn" onclick="press('/')">÷</button>
-            <button onclick="press('4')">4</button><button onclick="press('5')">5</button><button onclick="press('6')">6</button><button class="op-btn" onclick="press('*')">×</button>
-            <button onclick="press('1')">1</button><button onclick="press('2')">2</button><button onclick="press('3')">3</button><button class="op-btn" onclick="press('-')">-</button>
-            <button style="color:red" onclick="clearCalc()">C</button><button onclick="press('0')">0</button><button style="background:var(--primary); color:white" onclick="calculate()">=</button><button class="op-btn" onclick="press('+')">+</button>
-        </div>
-        <p class="sig-text">Calculator by ClintonAzabuike-Creator</p>
+    <div id="tool-qr" class="tool-view">
+        <h2>QR Generator</h2>
+        <input type="text" id="qr-input" placeholder="Type a link or text..." oninput="generateQR()">
+        <div id="qrcode"></div>
+        <p style="font-size:12px">Private & Instant by ClintonAzabuike-Creator</p>
     </div>
 
-    <div id="tool-water" class="tool-view">
-        <h2 style="margin-top:0">Water Tracker</h2>
-        <div style="font-size: 60px; margin: 20px 0;" id="water-count">0</div>
-        <p>Glasses of water today</p>
-        <button class="water-btn" onclick="addWater()">DRINK</button>
-        <button onclick="resetWater()" style="display:block; margin: 20px auto; background:none; border:none; color: #888; text-decoration: underline;">Reset Day</button>
-        <p class="sig-text">Water Tool by ClintonAzabuike-Creator</p>
+    <div id="tool-units" class="tool-view">
+        <h2>Unit Pro</h2>
+        <label>Feet to CM</label>
+        <input type="number" id="feet" placeholder="Feet" oninput="convertUnits()">
+        <div id="cm-result" style="font-weight:bold; font-size:20px; color:var(--primary)">0 cm</div>
     </div>
 
-    <div id="tool-breathe" class="tool-view">
-        <h2 style="margin-top:0">Breathe</h2>
-        <div class="breathe-circle">Focus</div>
-        <p id="breathe-text">Inhale... Exhale...</p>
-        <p class="sig-text">Wellness by ClintonAzabuike-Creator</p>
+    <div id="tool-about" class="tool-view" style="text-align:center;">
+        <div style="font-size:50px">👑</div>
+        <h2>ClintonAzabuike-Creator</h2>
+        <p>Lead Developer & Visionary</p>
+        <p>This toolbox is built to be 100% private, offline, and free for all users.</p>
+        <button class="btn-action" onclick="window.location.href='https://github.com/clintonazabuike-creator'">Follow My Work</button>
     </div>
 
-    <div id="tool-notes" class="tool-view">
-        <h2 style="margin-top:0">Quick Note</h2>
-        <textarea id="note-area" style="width:100%; height:200px; padding:15px; border-radius:15px; border:1px solid #ddd; box-sizing:border-box; font-size:16px;" placeholder="Type something..."></textarea>
-        <p class="sig-text">Notes by ClintonAzabuike-Creator</p>
     </div>
-</div>
 
 <footer>
-    Smile Toolbox Version 1.0<br>
-    Created by <span class="creator-tag">ClintonAzabuike-Creator</span>
+    Designed & Engineered by <br> <strong>ClintonAzabuike-Creator</strong> © 2026
 </footer>
 
 <script>
-    // NAVIGATION LOGIC
-    function showTool(toolId) {
+    function toggleTheme() {
+        const body = document.body;
+        const current = body.getAttribute('data-theme');
+        body.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
+    }
+
+    function showTool(id) {
         document.getElementById('dashboard').style.display = 'none';
-        document.querySelectorAll('.tool-view').forEach(v => v.style.display = 'none');
-        document.getElementById('tool-' + toolId).style.display = 'block';
+        document.querySelectorAll('.tool-view').forEach(t => t.style.display = 'none');
+        document.getElementById('tool-' + id).style.display = 'block';
         document.getElementById('backBtn').style.display = 'block';
         window.scrollTo(0,0);
     }
 
     function goHome() {
         document.getElementById('dashboard').style.display = 'grid';
-        document.querySelectorAll('.tool-view').forEach(v => v.style.display = 'none');
+        document.querySelectorAll('.tool-view').forEach(t => t.style.display = 'none');
         document.getElementById('backBtn').style.display = 'none';
     }
 
-    // CALCULATOR LOGIC
-    let display = document.getElementById('calc-display');
-    function press(val) { display.value += val; }
-    function clearCalc() { display.value = ''; }
-    function calculate() { 
-        try { 
-            // Only allow numbers and operators for safety
-            display.value = Function('"use strict";return (' + display.value + ')')(); 
-        } catch { display.value = 'Error'; } 
-    }
-
-    // WATER LOGIC
-    let waterKey = 'smile_water_count';
-    let glasses = localStorage.getItem(waterKey) || 0;
-    document.getElementById('water-count').innerText = glasses;
-
-    function addWater() {
-        glasses = parseInt(glasses) + 1;
-        localStorage.setItem(waterKey, glasses);
-        document.getElementById('water-count').innerText = glasses;
-    }
-    
-    function resetWater() {
-        if(confirm("Reset water count to 0?")) {
-            glasses = 0;
-            localStorage.setItem(waterKey, 0);
-            document.getElementById('water-count').innerText = 0;
+    function generateQR() {
+        const input = document.getElementById('qr-input').value;
+        const qrDiv = document.getElementById('qrcode');
+        qrDiv.innerHTML = "";
+        if(input) {
+            new QRCode(qrDiv, { text: input, width: 150, height: 150 });
         }
     }
 
-    // NOTES LOGIC
-    let noteArea = document.getElementById('note-area');
-    noteArea.value = localStorage.getItem('smile_notes') || '';
-    noteArea.addEventListener('input', () => {
-        localStorage.setItem('smile_notes', noteArea.value);
-    });
+    function convertUnits() {
+        const feet = document.getElementById('feet').value;
+        document.getElementById('cm-result').innerText = (feet * 30.48).toFixed(2) + " cm";
+    }
 </script>
 
 </body>
