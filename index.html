@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smile Toolbox</title>
+    <style>
+        :root { --main-color: #4A90E2; --text: #333; }
+        body { font-family: sans-serif; margin: 0; background: #f4f7f6; color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+        
+        /* Header & Signature Style */
+        header { background: white; padding: 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .signature { font-size: 0.8rem; color: #888; margin-top: 5px; }
+
+        /* The App Container */
+        #app-content { flex: 1; padding: 20px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .card { background: white; padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+
+        /* Back Button */
+        .back-btn { display: none; margin-bottom: 10px; padding: 8px 15px; background: #eee; border: none; border-radius: 5px; cursor: pointer; }
+
+        /* Footer Signature - This stays visible everywhere */
+        footer { padding: 15px; text-align: center; background: white; border-top: 1px solid #eee; font-weight: bold; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>😊 Smile Toolbox</h1>
+        <div class="signature">Built by ClintonAzubuike-Creator</div>
+    </header>
+
+    <div id="app-content">
+        <button class="back-btn" id="backBtn" onclick="showDashboard()">← Back to Menu</button>
+        
+        <div id="dashboard" class="grid">
+            <div class="card" onclick="openTool('Calculator')">➕<br>Calculator</div>
+            <div class="card" onclick="openTool('Water')">💧<br>Water Tracker</div>
+        </div>
+
+        <div id="tool-room" style="display:none;">
+            <h2 id="tool-title"></h2>
+            <div id="tool-ui"></div>
+        </div>
+    </div>
+
+    <footer>
+        Smile Toolbox by ClintonAzubuike-Creator
+    </footer>
+
+    <script>
+        function openTool(type) {
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('tool-room').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'block';
+            document.getElementById('tool-title').innerText = type + " by ClintonAzubuike-Creator";
+            
+            if(type === 'Calculator') {
+                document.getElementById('tool-ui').innerHTML = '<p>Your calculator logic goes here!</p>';
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('dashboard').style.display = 'grid';
+            document.getElementById('tool-room').style.display = 'none';
+            document.getElementById('backBtn').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
