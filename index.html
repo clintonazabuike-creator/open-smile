@@ -3,114 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smile Toolbox Pro | ClintonAzubuike-Creator</title>
+    <title>Smile Toolbox PRO | ClintonAzubuike-Creator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        :root { 
-            --primary: #4A90E2; --bg: #f0f2f5; --card: #ffffff; --text: #333; --accent: #50E3C2;
-        }
-        [data-theme="dark"] {
-            --bg: #121212; --card: #1e1e1e; --text: #ffffff; --primary: #75b0f0;
-        }
-        body { 
-            font-family: 'Inter', -apple-system, sans-serif; margin: 0; 
-            background: var(--bg); color: var(--text); transition: 0.3s;
-            display: flex; flex-direction: column; min-height: 100vh;
-        }
+        :root { --primary: #4A90E2; --bg: #f0f2f5; --card: #ffffff; --text: #333; --accent: #50E3C2; --danger: #FF5252; }
+        [data-theme="dark"] { --bg: #121212; --card: #1e1e1e; --text: #ffffff; --primary: #75b0f0; }
+        body { font-family: 'Inter', system-ui, sans-serif; margin: 0; background: var(--bg); color: var(--text); transition: 0.3s; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        header { background: var(--card); padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .theme-toggle { position: absolute; right: 20px; top: 20px; cursor: pointer; font-size: 24px; }
 
-        /* High-Level Header */
-        header { 
-            background: var(--card); padding: 25px; text-align: center; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100;
-        }
-        .logo { font-size: 24px; font-weight: 800; letter-spacing: -1px; }
-        .theme-toggle { 
-            position: absolute; right: 20px; top: 25px; cursor: pointer; font-size: 20px;
-        }
-
-        /* Dashboard */
         #main-container { flex: 1; padding: 20px; max-width: 600px; margin: 0 auto; width: 100%; box-sizing: border-box; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .card { 
-            background: var(--card); border-radius: 24px; padding: 30px 15px; 
-            text-align: center; cursor: pointer; transition: 0.3s;
-            border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-        .card i { font-size: 35px; margin-bottom: 12px; display: block; }
+        .card { background: var(--card); border-radius: 24px; padding: 25px 10px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .card:active { transform: scale(0.95); }
+        .card i { font-size: 35px; margin-bottom: 10px; display: block; }
 
-        /* Tools Views */
-        .tool-view { display: none; background: var(--card); padding: 30px; border-radius: 30px; animation: slideUp 0.4s ease; }
+        .tool-view { display: none; background: var(--card); padding: 25px; border-radius: 30px; animation: slideUp 0.3s ease; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        input, select, textarea { 
-            width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; 
-            border: 1px solid #ddd; background: var(--bg); color: var(--text); box-sizing: border-box;
-        }
-
-        /* QR Specific */
-        #qrcode { display: flex; justify-content: center; margin: 20px 0; padding: 10px; background: white; border-radius: 10px; width: fit-content; margin: 20px auto; }
-
-        /* Footer */
-        footer { padding: 30px; text-align: center; font-size: 13px; opacity: 0.7; }
         .back-btn { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 15px; width: 100%; font-weight: bold; margin-bottom: 20px; cursor: pointer; }
+        input, select { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1px solid #ddd; background: var(--bg); color: var(--text); box-sizing: border-box; }
+        
+        /* Health Tools Styles */
+        .health-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .health-box { border: 2px solid #eee; padding: 20px; border-radius: 20px; }
+        .breathe-circle { width: 120px; height: 120px; background: var(--accent); border-radius: 50%; margin: 20px auto; animation: breathe 8s infinite ease-in-out; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
+        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.4); } }
+        .btn-action { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
 
-        .btn-action { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; }
+        /* Calc & QR */
+        #qrcode { margin: 20px auto; padding: 10px; background: white; width: fit-content; }
+        .result-text { font-size: 22px; font-weight: bold; color: var(--primary); margin: 10px 0; }
+        footer { padding: 30px; text-align: center; font-size: 13px; opacity: 0.8; }
     </style>
 </head>
 <body data-theme="light">
 
 <header>
-    <div class="logo">😊 Smile Toolbox <span style="color:var(--primary)">PRO</span></div>
-    <div class="theme-toggle" onclick="toggleTheme()">🌓</div>
-    <div style="font-size: 10px; opacity: 0.6; margin-top: 5px;">BY CLINTONAZABUIKE-CREATOR</div>
+    <div style="font-weight: 900; font-size: 22px;">SMILE TOOLBOX <span style="color:var(--primary)">PRO</span></div>
+    <div class="theme-toggle" onclick="toggleTheme()">🌗</div>
+    <div style="font-size: 10px; color: var(--primary); margin-top: 5px;">CLINTONAZABUIKE-CREATOR EDITION</div>
 </header>
 
 <div id="main-container">
-    <button class="back-btn" id="backBtn" style="display:none;" onclick="goHome()">🏠 Return to Dashboard</button>
+    <button class="back-btn" id="backBtn" style="display:none;" onclick="goHome()">🏠 Back to Dashboard</button>
 
     <div id="dashboard" class="grid">
+        <div class="card" onclick="showTool('health')"><i>🏥</i>Health Suite</div>
+        <div class="card" onclick="showTool('money')"><i>💸</i>Currency</div>
+        <div class="card" onclick="showTool('vault')"><i>🔐</i>Pass Gen</div>
         <div class="card" onclick="showTool('qr')"><i>📲</i>QR Creator</div>
         <div class="card" onclick="showTool('units')"><i>⚖️</i>Unit Pro</div>
-        <div class="card" onclick="showTool('calc')"><i>🔢</i>Calc Plus</div>
-        <div class="card" onclick="showTool('water')"><i>💧</i>Health</div>
-        <div class="card" onclick="showTool('notes')"><i>📝</i>Vault</div>
-        <div class="card" onclick="showTool('about')"><i>👑</i>Creator</div>
+        <div class="card" onclick="showTool('notes')"><i>📝</i>Note Vault</div>
+    </div>
+
+    <div id="tool-health" class="tool-view">
+        <h2 style="text-align: center;">Health Suite</h2>
+        <div class="health-grid">
+            <div class="health-box" style="text-align: center;">
+                <h3>💧 Water Tracker</h3>
+                <div style="font-size: 40px;" id="water-val">0</div>
+                <button class="btn-action" onclick="addWater()">Drink Glass</button>
+            </div>
+            <div class="health-box" style="text-align: center;">
+                <h3>🧘 Breathing Guide</h3>
+                <div class="breathe-circle">FOCUS</div>
+                <p>Inhale (4s) ... Exhale (4s)</p>
+            </div>
+        </div>
+        <p style="text-align:center; font-size:11px; margin-top:20px;">Health Engine by ClintonAzabuike-Creator</p>
+    </div>
+
+    <div id="tool-money" class="tool-view">
+        <h2>Currency Converter</h2>
+        <input type="number" id="amount" placeholder="Enter Amount" oninput="convertMoney()">
+        <select id="currency-choice" onchange="convertMoney()">
+            <option value="1600">USD to NGN (Nigeria)</option>
+            <option value="0.92">USD to EUR</option>
+            <option value="0.78">USD to GBP</option>
+        </select>
+        <div class="result-text" id="money-result">Result: 0</div>
+        <p style="font-size:10px;">*Rates are approximate. Tool by ClintonAzabuike-Creator</p>
+    </div>
+
+    <div id="tool-vault" class="tool-view">
+        <h2>Secure Password Gen</h2>
+        <div class="result-text" id="pass-result" style="background:#eee; padding:15px; border-radius:10px; word-break:break-all;">********</div>
+        <button class="btn-action" style="width:100%; margin-top:10px;" onclick="genPass()">Generate Secure Pass</button>
+        <p style="font-size:11px;">100% Offline & Private by ClintonAzabuike-Creator</p>
     </div>
 
     <div id="tool-qr" class="tool-view">
-        <h2>QR Generator</h2>
-        <input type="text" id="qr-input" placeholder="Type a link or text..." oninput="generateQR()">
+        <h2>QR Creator</h2>
+        <input type="text" id="qr-text" placeholder="Link or Text here" oninput="doQR()">
         <div id="qrcode"></div>
-        <p style="font-size:12px">Private & Instant by ClintonAzabuike-Creator</p>
     </div>
 
     <div id="tool-units" class="tool-view">
         <h2>Unit Pro</h2>
-        <label>Feet to CM</label>
-        <input type="number" id="feet" placeholder="Feet" oninput="convertUnits()">
-        <div id="cm-result" style="font-weight:bold; font-size:20px; color:var(--primary)">0 cm</div>
+        <input type="number" id="feet-input" placeholder="Feet (ft)" oninput="doUnits()">
+        <div class="result-text" id="unit-result">0 cm</div>
     </div>
 
-    <div id="tool-about" class="tool-view" style="text-align:center;">
-        <div style="font-size:50px">👑</div>
-        <h2>ClintonAzabuike-Creator</h2>
-        <p>Lead Developer & Visionary</p>
-        <p>This toolbox is built to be 100% private, offline, and free for all users.</p>
-        <button class="btn-action" onclick="window.location.href='https://github.com/clintonazabuike-creator'">Follow My Work</button>
+    <div id="tool-notes" class="tool-view">
+        <h2>Private Vault</h2>
+        <textarea id="notes-db" style="width:100%; height:200px; border-radius:15px; padding:15px;" placeholder="Keep secrets here..."></textarea>
     </div>
-
-    </div>
+</div>
 
 <footer>
-    Designed & Engineered by <br> <strong>ClintonAzabuike-Creator</strong> © 2026
+    © 2026 SMILE TOOLBOX PRO <br> 
+    <span style="color:var(--primary); font-weight:bold;">BY CLINTONAZABUIKE-CREATOR</span>
 </footer>
 
 <script>
     function toggleTheme() {
-        const body = document.body;
-        const current = body.getAttribute('data-theme');
-        body.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
+        const b = document.body;
+        b.setAttribute('data-theme', b.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
     }
 
     function showTool(id) {
@@ -118,7 +128,6 @@
         document.querySelectorAll('.tool-view').forEach(t => t.style.display = 'none');
         document.getElementById('tool-' + id).style.display = 'block';
         document.getElementById('backBtn').style.display = 'block';
-        window.scrollTo(0,0);
     }
 
     function goHome() {
@@ -127,19 +136,51 @@
         document.getElementById('backBtn').style.display = 'none';
     }
 
-    function generateQR() {
-        const input = document.getElementById('qr-input').value;
-        const qrDiv = document.getElementById('qrcode');
-        qrDiv.innerHTML = "";
-        if(input) {
-            new QRCode(qrDiv, { text: input, width: 150, height: 150 });
-        }
+    // --- FUNCTIONAL LOGIC ---
+
+    // Water
+    let w = localStorage.getItem('clint_water') || 0;
+    document.getElementById('water-val').innerText = w;
+    function addWater() {
+        w++; localStorage.setItem('clint_water', w);
+        document.getElementById('water-val').innerText = w;
     }
 
-    function convertUnits() {
-        const feet = document.getElementById('feet').value;
-        document.getElementById('cm-result').innerText = (feet * 30.48).toFixed(2) + " cm";
+    // Money
+    function convertMoney() {
+        const amt = document.getElementById('amount').value;
+        const rate = document.getElementById('currency-choice').value;
+        document.getElementById('money-result').innerText = "Total: " + (amt * rate).toLocaleString();
     }
+
+    // Password
+    function genPass() {
+        const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+        let retVal = "";
+        for (let i = 0; i < 12; ++i) {
+            retVal += charset.charAt(Math.floor(Math.random() * charset.length));
+        }
+        document.getElementById('pass-result').innerText = retVal;
+    }
+
+    // QR
+    function doQR() {
+        const txt = document.getElementById('qr-text').value;
+        const q = document.getElementById('qrcode');
+        q.innerHTML = "";
+        if(txt) new QRCode(q, { text: txt, width: 140, height: 140 });
+    }
+
+    // Units
+    function doUnits() {
+        const f = document.getElementById('feet-input').value;
+        document.getElementById('unit-result').innerText = (f * 30.48).toFixed(2) + " cm";
+    }
+
+    // Notes
+    const n = document.getElementById('notes-db');
+    n.value = localStorage.getItem('clint_notes') || '';
+    n.oninput = () => localStorage.setItem('clint_notes', n.value);
 </script>
 
 </body>
