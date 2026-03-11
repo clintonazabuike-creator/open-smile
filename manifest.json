@@ -1,0 +1,16 @@
+{
+  "short_name": "SmileTool",
+  "name": "Smile Toolbox Pro",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/10309/10309355.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#007AFF"
+}
