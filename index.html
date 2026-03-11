@@ -3,121 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smile Toolbox PRO | ClintonAzubuike-Creator</title>
+    <title>Smile Toolbox PRO</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        :root { --primary: #4A90E2; --bg: #f0f2f5; --card: #ffffff; --text: #333; --accent: #50E3C2; --danger: #FF5252; }
-        [data-theme="dark"] { --bg: #121212; --card: #1e1e1e; --text: #ffffff; --primary: #75b0f0; }
-        body { font-family: 'Inter', system-ui, sans-serif; margin: 0; background: var(--bg); color: var(--text); transition: 0.3s; display: flex; flex-direction: column; min-height: 100vh; }
+        :root { --primary: #007AFF; --bg: #f2f2f7; --card: #ffffff; --text: #000000; --accent: #34C759; }
+        [data-theme="dark"] { --bg: #000000; --card: #1c1c1e; --text: #ffffff; --primary: #0A84FF; }
         
-        header { background: var(--card); padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
-        .theme-toggle { position: absolute; right: 20px; top: 20px; cursor: pointer; font-size: 24px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; background: var(--bg); color: var(--text); transition: 0.3s; overflow-x: hidden; }
 
-        #main-container { flex: 1; padding: 20px; max-width: 600px; margin: 0 auto; width: 100%; box-sizing: border-box; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .card { background: var(--card); border-radius: 24px; padding: 25px 10px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .card:active { transform: scale(0.95); }
-        .card i { font-size: 35px; margin-bottom: 10px; display: block; }
+        /* Splash Screen */
+        #splash { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--card); z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.5s; }
+        .loader { width: 50px; height: 50px; border: 5px solid #eee; border-top: 5px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .tool-view { display: none; background: var(--card); padding: 25px; border-radius: 30px; animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* Navigation */
+        header { background: var(--card); padding: 20px; text-align: center; border-bottom: 1px solid rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .theme-toggle { position: absolute; right: 20px; top: 20px; cursor: pointer; font-size: 22px; }
+
+        #main-container { padding: 20px; max-width: 500px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .card { background: var(--card); border-radius: 18px; padding: 25px 10px; text-align: center; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .card:active { transform: scale(0.96); opacity: 0.8; }
+        .card i { font-size: 30px; margin-bottom: 8px; display: block; }
+        .card span { font-size: 14px; font-weight: 500; }
+
+        /* Tools */
+        .tool-view { display: none; background: var(--card); padding: 25px; border-radius: 24px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        .back-btn { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 15px; width: 100%; font-weight: bold; margin-bottom: 20px; cursor: pointer; }
-        input, select { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1px solid #ddd; background: var(--bg); color: var(--text); box-sizing: border-box; }
-        
-        /* Health Tools Styles */
-        .health-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        .health-box { border: 2px solid #eee; padding: 20px; border-radius: 20px; }
-        .breathe-circle { width: 120px; height: 120px; background: var(--accent); border-radius: 50%; margin: 20px auto; animation: breathe 8s infinite ease-in-out; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
-        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.4); } }
-        .btn-action { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .back-btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 12px; width: 100%; font-weight: 600; margin-bottom: 15px; cursor: pointer; }
+        input, select, textarea { width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; background: var(--bg); color: var(--text); font-size: 16px; box-sizing: border-box; }
 
-        /* Calc & QR */
-        #qrcode { margin: 20px auto; padding: 10px; background: white; width: fit-content; }
-        .result-text { font-size: 22px; font-weight: bold; color: var(--primary); margin: 10px 0; }
-        footer { padding: 30px; text-align: center; font-size: 13px; opacity: 0.8; }
+        /* Health & Utilities */
+        .breathe-circle { width: 120px; height: 120px; background: var(--accent); border-radius: 50%; margin: 30px auto; animation: breathe 8s infinite ease-in-out; }
+        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+        .btn-action { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; width: 100%; margin-top: 10px; }
+
+        footer { padding: 40px 20px; text-align: center; font-size: 12px; opacity: 0.5; }
     </style>
 </head>
 <body data-theme="light">
 
+<div id="splash">
+    <div style="font-size: 40px; margin-bottom: 20px;">😊</div>
+    <div class="loader"></div>
+    <p style="font-weight: bold; margin-top: 20px;">Smile Toolbox Pro</p>
+</div>
+
 <header>
-    <div style="font-weight: 900; font-size: 22px;">SMILE TOOLBOX <span style="color:var(--primary)">PRO</span></div>
-    <div class="theme-toggle" onclick="toggleTheme()">🌗</div>
-    <div style="font-size: 10px; color: var(--primary); margin-top: 5px;">CLINTONAZABUIKE-CREATOR EDITION</div>
+    <div style="font-weight: 800; font-size: 20px;">SMILE TOOLBOX</div>
+    <div style="font-size: 10px; opacity: 0.5;">BY CLINTONAZABUIKE-CREATOR</div>
+    <div class="theme-toggle" onclick="toggleTheme()">🌓</div>
 </header>
 
 <div id="main-container">
-    <button class="back-btn" id="backBtn" style="display:none;" onclick="goHome()">🏠 Back to Dashboard</button>
+    <button class="back-btn" id="backBtn" style="display:none;" onclick="goHome()">✕ Close Tool</button>
 
     <div id="dashboard" class="grid">
-        <div class="card" onclick="showTool('health')"><i>🏥</i>Health Suite</div>
-        <div class="card" onclick="showTool('money')"><i>💸</i>Currency</div>
-        <div class="card" onclick="showTool('vault')"><i>🔐</i>Pass Gen</div>
-        <div class="card" onclick="showTool('qr')"><i>📲</i>QR Creator</div>
-        <div class="card" onclick="showTool('units')"><i>⚖️</i>Unit Pro</div>
-        <div class="card" onclick="showTool('notes')"><i>📝</i>Note Vault</div>
+        <div class="card" onclick="showTool('health')"><i>🏥</i><span>Health</span></div>
+        <div class="card" onclick="showTool('money')"><i>💸</i><span>Currency</span></div>
+        <div class="card" onclick="showTool('vault')"><i>🔐</i><span>Passwords</span></div>
+        <div class="card" onclick="showTool('qr')"><i>📲</i><span>QR Code</span></div>
+        <div class="card" onclick="showTool('units')"><i>⚖️</i><span>Units</span></div>
+        <div class="card" onclick="showTool('notes')"><i>📝</i><span>Notes</span></div>
     </div>
 
     <div id="tool-health" class="tool-view">
-        <h2 style="text-align: center;">Health Suite</h2>
-        <div class="health-grid">
-            <div class="health-box" style="text-align: center;">
-                <h3>💧 Water Tracker</h3>
-                <div style="font-size: 40px;" id="water-val">0</div>
-                <button class="btn-action" onclick="addWater()">Drink Glass</button>
-            </div>
-            <div class="health-box" style="text-align: center;">
-                <h3>🧘 Breathing Guide</h3>
-                <div class="breathe-circle">FOCUS</div>
-                <p>Inhale (4s) ... Exhale (4s)</p>
-            </div>
+        <div style="text-align: center;">
+            <div style="font-size: 40px;" id="water-val">0</div>
+            <p>Glasses of Water</p>
+            <button class="btn-action" onclick="addWater()">+ Add Glass</button>
+            <div class="breathe-circle"></div>
+            <p>Breathe In... Out...</p>
         </div>
-        <p style="text-align:center; font-size:11px; margin-top:20px;">Health Engine by ClintonAzabuike-Creator</p>
     </div>
 
     <div id="tool-money" class="tool-view">
-        <h2>Currency Converter</h2>
-        <input type="number" id="amount" placeholder="Enter Amount" oninput="convertMoney()">
+        <input type="number" id="amount" placeholder="Amount" oninput="convertMoney()">
         <select id="currency-choice" onchange="convertMoney()">
-            <option value="1600">USD to NGN (Nigeria)</option>
+            <option value="1600">USD to NGN</option>
             <option value="0.92">USD to EUR</option>
             <option value="0.78">USD to GBP</option>
         </select>
-        <div class="result-text" id="money-result">Result: 0</div>
-        <p style="font-size:10px;">*Rates are approximate. Tool by ClintonAzabuike-Creator</p>
+        <h2 id="money-result" style="text-align:center">0</h2>
     </div>
 
     <div id="tool-vault" class="tool-view">
-        <h2>Secure Password Gen</h2>
-        <div class="result-text" id="pass-result" style="background:#eee; padding:15px; border-radius:10px; word-break:break-all;">********</div>
-        <button class="btn-action" style="width:100%; margin-top:10px;" onclick="genPass()">Generate Secure Pass</button>
-        <p style="font-size:11px;">100% Offline & Private by ClintonAzabuike-Creator</p>
+        <div id="pass-result" style="text-align:center; padding:20px; background:var(--bg); border-radius:10px; font-family:monospace; margin-bottom:10px;">********</div>
+        <button class="btn-action" onclick="genPass()">Generate Secure Password</button>
     </div>
 
     <div id="tool-qr" class="tool-view">
-        <h2>QR Creator</h2>
-        <input type="text" id="qr-text" placeholder="Link or Text here" oninput="doQR()">
-        <div id="qrcode"></div>
+        <input type="text" id="qr-text" placeholder="Paste link here" oninput="doQR()">
+        <div id="qrcode" style="margin:20px auto; width:fit-content; background:white; padding:10px;"></div>
     </div>
 
     <div id="tool-units" class="tool-view">
-        <h2>Unit Pro</h2>
-        <input type="number" id="feet-input" placeholder="Feet (ft)" oninput="doUnits()">
-        <div class="result-text" id="unit-result">0 cm</div>
+        <input type="number" id="feet-input" placeholder="Feet" oninput="doUnits()">
+        <h2 id="unit-result" style="text-align:center">0 cm</h2>
     </div>
 
     <div id="tool-notes" class="tool-view">
-        <h2>Private Vault</h2>
-        <textarea id="notes-db" style="width:100%; height:200px; border-radius:15px; padding:15px;" placeholder="Keep secrets here..."></textarea>
+        <textarea id="notes-db" style="height:300px;" placeholder="Start writing..."></textarea>
     </div>
 </div>
 
 <footer>
-    © 2026 SMILE TOOLBOX PRO <br> 
-    <span style="color:var(--primary); font-weight:bold;">BY CLINTONAZABUIKE-CREATOR</span>
+    Designed by ClintonAzabuike-Creator <br>
+    All data is stored privately on this device.
 </footer>
 
 <script>
+    // Splash logic
+    window.onload = () => {
+        setTimeout(() => { document.getElementById('splash').style.opacity = '0'; 
+        setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 500);
+        }, 1500);
+    };
+
     function toggleTheme() {
         const b = document.body;
         b.setAttribute('data-theme', b.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
@@ -136,48 +139,34 @@
         document.getElementById('backBtn').style.display = 'none';
     }
 
-    // --- FUNCTIONAL LOGIC ---
-
-    // Water
+    // Logic
     let w = localStorage.getItem('clint_water') || 0;
     document.getElementById('water-val').innerText = w;
-    function addWater() {
-        w++; localStorage.setItem('clint_water', w);
-        document.getElementById('water-val').innerText = w;
-    }
+    function addWater() { w++; localStorage.setItem('clint_water', w); document.getElementById('water-val').innerText = w; }
 
-    // Money
     function convertMoney() {
-        const amt = document.getElementById('amount').value;
-        const rate = document.getElementById('currency-choice').value;
-        document.getElementById('money-result').innerText = "Total: " + (amt * rate).toLocaleString();
+        const a = document.getElementById('amount').value;
+        const r = document.getElementById('currency-choice').value;
+        document.getElementById('money-result').innerText = (a * r).toLocaleString();
     }
 
-    // Password
     function genPass() {
-        const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
-        let retVal = "";
-        for (let i = 0; i < 12; ++i) {
-            retVal += charset.charAt(Math.floor(Math.random() * charset.length));
-        }
-        document.getElementById('pass-result').innerText = retVal;
+        const c = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%";
+        let r = ""; for (let i = 0; i < 14; ++i) r += c.charAt(Math.floor(Math.random() * c.length));
+        document.getElementById('pass-result').innerText = r;
     }
 
-    // QR
     function doQR() {
-        const txt = document.getElementById('qr-text').value;
+        const t = document.getElementById('qr-text').value;
         const q = document.getElementById('qrcode');
-        q.innerHTML = "";
-        if(txt) new QRCode(q, { text: txt, width: 140, height: 140 });
+        q.innerHTML = ""; if(t) new QRCode(q, { text: t, width: 160, height: 160 });
     }
 
-    // Units
     function doUnits() {
         const f = document.getElementById('feet-input').value;
         document.getElementById('unit-result').innerText = (f * 30.48).toFixed(2) + " cm";
     }
 
-    // Notes
     const n = document.getElementById('notes-db');
     n.value = localStorage.getItem('clint_notes') || '';
     n.oninput = () => localStorage.setItem('clint_notes', n.value);
