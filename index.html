@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smile Toolbox PRO</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007AFF">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
     <style>
         :root { --primary: #007AFF; --bg: #f2f2f7; --card: #ffffff; --text: #000000; --accent: #34C759; }
         [data-theme="dark"] { --bg: #000000; --card: #1c1c1e; --text: #ffffff; --primary: #0A84FF; }
@@ -13,45 +20,45 @@
 
         /* Splash Screen */
         #splash { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--card); z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.5s; }
-        .loader { width: 50px; height: 50px; border: 5px solid #eee; border-top: 5px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        .loader { width: 40px; height: 40px; border: 4px solid #eee; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Navigation */
+        /* Header */
         header { background: var(--card); padding: 20px; text-align: center; border-bottom: 1px solid rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
         .theme-toggle { position: absolute; right: 20px; top: 20px; cursor: pointer; font-size: 22px; }
 
         #main-container { padding: 20px; max-width: 500px; margin: 0 auto; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .card { background: var(--card); border-radius: 18px; padding: 25px 10px; text-align: center; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .card { background: var(--card); border-radius: 20px; padding: 25px 10px; text-align: center; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .card:active { transform: scale(0.96); opacity: 0.8; }
         .card i { font-size: 30px; margin-bottom: 8px; display: block; }
-        .card span { font-size: 14px; font-weight: 500; }
+        .card span { font-size: 14px; font-weight: 600; }
 
-        /* Tools */
+        /* Tool Views */
         .tool-view { display: none; background: var(--card); padding: 25px; border-radius: 24px; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        .back-btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 12px; width: 100%; font-weight: 600; margin-bottom: 15px; cursor: pointer; }
+        .back-btn { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 12px; width: 100%; font-weight: 600; margin-bottom: 15px; cursor: pointer; }
         input, select, textarea { width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; background: var(--bg); color: var(--text); font-size: 16px; box-sizing: border-box; }
 
-        /* Health & Utilities */
+        /* Components */
         .breathe-circle { width: 120px; height: 120px; background: var(--accent); border-radius: 50%; margin: 30px auto; animation: breathe 8s infinite ease-in-out; }
         @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
-        .btn-action { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; width: 100%; margin-top: 10px; }
+        .btn-action { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer; }
 
-        footer { padding: 40px 20px; text-align: center; font-size: 12px; opacity: 0.5; }
+        footer { padding: 40px 20px; text-align: center; font-size: 12px; opacity: 0.6; }
     </style>
 </head>
 <body data-theme="light">
 
 <div id="splash">
-    <div style="font-size: 40px; margin-bottom: 20px;">😊</div>
+    <div style="font-size: 50px; margin-bottom: 20px;">😊</div>
     <div class="loader"></div>
-    <p style="font-weight: bold; margin-top: 20px;">Smile Toolbox Pro</p>
+    <p style="font-weight: 700; margin-top: 20px; letter-spacing: 1px;">SMILE TOOLBOX</p>
 </div>
 
 <header>
-    <div style="font-weight: 800; font-size: 20px;">SMILE TOOLBOX</div>
+    <div style="font-weight: 800; font-size: 18px; letter-spacing: 1px;">SMILE TOOLBOX</div>
     <div style="font-size: 10px; opacity: 0.5;">BY CLINTONAZABUIKE-CREATOR</div>
     <div class="theme-toggle" onclick="toggleTheme()">🌓</div>
 </header>
@@ -70,55 +77,56 @@
 
     <div id="tool-health" class="tool-view">
         <div style="text-align: center;">
-            <div style="font-size: 40px;" id="water-val">0</div>
-            <p>Glasses of Water</p>
-            <button class="btn-action" onclick="addWater()">+ Add Glass</button>
+            <div style="font-size: 48px; font-weight: 800;" id="water-val">0</div>
+            <p style="margin-top: 0; opacity: 0.7;">Glasses of Water</p>
+            <button class="btn-action" onclick="addWater()">+ Drink Water</button>
             <div class="breathe-circle"></div>
-            <p>Breathe In... Out...</p>
+            <p style="opacity: 0.7;">Breathing Focus</p>
         </div>
     </div>
 
     <div id="tool-money" class="tool-view">
-        <input type="number" id="amount" placeholder="Amount" oninput="convertMoney()">
+        <input type="number" id="amount" placeholder="Enter USD Amount" oninput="convertMoney()">
         <select id="currency-choice" onchange="convertMoney()">
-            <option value="1600">USD to NGN</option>
-            <option value="0.92">USD to EUR</option>
-            <option value="0.78">USD to GBP</option>
+            <option value="1600">USD to NGN (Naira)</option>
+            <option value="0.92">USD to EUR (Euro)</option>
+            <option value="0.78">USD to GBP (Pound)</option>
         </select>
-        <h2 id="money-result" style="text-align:center">0</h2>
+        <h1 id="money-result" style="text-align:center; margin-top: 20px;">0</h1>
     </div>
 
     <div id="tool-vault" class="tool-view">
-        <div id="pass-result" style="text-align:center; padding:20px; background:var(--bg); border-radius:10px; font-family:monospace; margin-bottom:10px;">********</div>
+        <div id="pass-result" style="text-align:center; padding:20px; background:var(--bg); border-radius:12px; font-family:monospace; font-size: 18px; margin-bottom:10px; word-break: break-all;">********</div>
         <button class="btn-action" onclick="genPass()">Generate Secure Password</button>
     </div>
 
     <div id="tool-qr" class="tool-view">
-        <input type="text" id="qr-text" placeholder="Paste link here" oninput="doQR()">
-        <div id="qrcode" style="margin:20px auto; width:fit-content; background:white; padding:10px;"></div>
+        <input type="text" id="qr-text" placeholder="Paste link or text here" oninput="doQR()">
+        <div id="qrcode" style="margin:20px auto; width:fit-content; background:white; padding:15px; border-radius:10px;"></div>
     </div>
 
     <div id="tool-units" class="tool-view">
-        <input type="number" id="feet-input" placeholder="Feet" oninput="doUnits()">
-        <h2 id="unit-result" style="text-align:center">0 cm</h2>
+        <input type="number" id="feet-input" placeholder="Enter Feet (ft)" oninput="doUnits()">
+        <h1 id="unit-result" style="text-align:center; margin-top: 20px;">0 cm</h1>
     </div>
 
     <div id="tool-notes" class="tool-view">
-        <textarea id="notes-db" style="height:300px;" placeholder="Start writing..."></textarea>
+        <textarea id="notes-db" style="height:350px;" placeholder="Your private notes stay on this phone..."></textarea>
     </div>
 </div>
 
 <footer>
     Designed by ClintonAzabuike-Creator <br>
-    All data is stored privately on this device.
+    All Data Stored Locally & Privately
 </footer>
 
 <script>
     // Splash logic
     window.onload = () => {
-        setTimeout(() => { document.getElementById('splash').style.opacity = '0'; 
-        setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 500);
-        }, 1500);
+        setTimeout(() => { 
+            document.getElementById('splash').style.opacity = '0'; 
+            setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 500);
+        }, 1200);
     };
 
     function toggleTheme() {
@@ -131,6 +139,7 @@
         document.querySelectorAll('.tool-view').forEach(t => t.style.display = 'none');
         document.getElementById('tool-' + id).style.display = 'block';
         document.getElementById('backBtn').style.display = 'block';
+        window.scrollTo(0,0);
     }
 
     function goHome() {
@@ -139,10 +148,14 @@
         document.getElementById('backBtn').style.display = 'none';
     }
 
-    // Logic
+    // Logic Functions
     let w = localStorage.getItem('clint_water') || 0;
     document.getElementById('water-val').innerText = w;
-    function addWater() { w++; localStorage.setItem('clint_water', w); document.getElementById('water-val').innerText = w; }
+    function addWater() { 
+        w++; 
+        localStorage.setItem('clint_water', w); 
+        document.getElementById('water-val').innerText = w; 
+    }
 
     function convertMoney() {
         const a = document.getElementById('amount').value;
@@ -151,20 +164,20 @@
     }
 
     function genPass() {
-        const c = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%";
-        let r = ""; for (let i = 0; i < 14; ++i) r += c.charAt(Math.floor(Math.random() * c.length));
+        const c = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789!@#$%&*";
+        let r = ""; for (let i = 0; i < 16; ++i) r += c.charAt(Math.floor(Math.random() * c.length));
         document.getElementById('pass-result').innerText = r;
     }
 
     function doQR() {
         const t = document.getElementById('qr-text').value;
         const q = document.getElementById('qrcode');
-        q.innerHTML = ""; if(t) new QRCode(q, { text: t, width: 160, height: 160 });
+        q.innerHTML = ""; if(t) new QRCode(q, { text: t, width: 180, height: 180 });
     }
 
     function doUnits() {
         const f = document.getElementById('feet-input').value;
-        document.getElementById('unit-result').innerText = (f * 30.48).toFixed(2) + " cm";
+        document.getElementById('unit-result').innerText = (f * 30.48).toFixed(1) + " cm";
     }
 
     const n = document.getElementById('notes-db');
